@@ -1,5 +1,4 @@
 library("move2")
-library("lubridate")
 library(geosphere)
 library(suncalc)
 library(purrr)

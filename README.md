@@ -1,5 +1,6 @@
-# Pred_cluster
-Moveapps Github repository: https://github.com/nilanjanchatterjee/Pred_cluster
+# Predation cluster detection Move2
+Moveapps 
+Github repository: https://github.com/nilanjanchatterjee/Pred_cluster
 
 ## Description
 The app predicts the time, location and duration of predation clusters from tracking data. The output is given in the form of a map of cluster locations and a table containing the centroid location, number of locations, average radius, and duration of each identified cluster.
@@ -19,10 +20,10 @@ move2 in Movebank format
 
 ## Artefacts
 
-*Cluster_summary_output.csv*: csv with followig columns
+*Cluster_summary_output.csv*: csv with following columns
 
-- trackId	- Identification of the animal
-- clus_ID	- Unique cluster iedntification number
+- trackId	- Identification of the animal derived from the movebank data 
+- clus_ID	- Unique cluster identification number
 - clus_start	-  Timestamp of the first location of the cluster
 - clus_end	- Timestamp of the Last location of the cluster
 - clus_status	- "Closed" if the time window (window_days) has expired for the cluster according to users Sys.time() output. These clusters therefore should not change if appending new location data.           "Open" if the time window remains open at the time the function was run. "Open" clusters have the ability to shift sequence, combine with other clusters, emerge as a new cluster, etc. This attribute becomes relevant when appending new satellite data to the location dataframe, and may serve as an index of whether an animal continues to actively visit the cluster site within the time window.
@@ -36,14 +37,18 @@ move2 in Movebank format
 - avg_clus_dist	- Mean distance from all cluster locations to centroid
 - night_pts	- Number of night cluster locations at night
 - night_prop -  Proportion of cluster locations at night
-*Cluster_locations_plot.jpeg*: jpeg plot showing a map of the tracking data along with identified cluster locations
 
-## Parameters
+*Cluster_locations_plot.pdf*: Multipage pdf plot with each individuals on one page showing a map of the tracking data (black lines) along with identified cluster locations (brown dots)
 
-*search_radius*: Search radius (meters) from cluster centroid when building clusters.
+## Settings
 
-*window_days*: Window (days) to search for new locations from the most recent location to form one cluster.
+*search_radius*: Search radius (meters) from cluster centroid when building clusters. A default value of 100 meters is used.
 
-*clus_min_locs*: Minimum number of locations required to form a cluster. Default used is 2.
+*window_days*: Window (days) to search for new locations from the most recent location to form one cluster. The default value used is 3.
+
+*clus_min_locs*: Minimum number of locations required to form a cluster. Default value used is 5.
 
 *centroid_calc*: Method for recalculating centroids when actively building clusters; currently "mean" is always used. 
+
+## Most Common errors   
+Check the output csv and plots carefully for identified **Clusters**. Change the radius distance and/or search window accordingly.

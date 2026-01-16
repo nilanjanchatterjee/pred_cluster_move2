@@ -38,12 +38,6 @@
 	  {
         "name": "geosphere"
       },
-      {
-        "name": "tcltk"
-      },
-	  {
-        "name": "utils"
-      },
 	  {
         "name": "suncalc"
       },
