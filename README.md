@@ -1,77 +1,49 @@
-# Name of App *(Give your app a short and informative title. Please adhere to our convention of Title Case without hyphens (e.g. My New App))*
-
-MoveApps
-
-Github repository: *github.com/yourAccount/Name-of-App* *(provide the link to the repository where the code of the App can be found)*
+# Pred_cluster
+Moveapps Github repository: https://github.com/nilanjanchatterjee/Pred_cluster
 
 ## Description
-*Enter here the short description of the App that might also be used when filling out the description during App submission to MoveApps. This text is directly presented to Users that look through the list of Apps when compiling Workflows.*
+The app predicts the time, location and duration of predation clusters from tracking data. The output is given in the form of a map of cluster locations and a table containing the centroid location, number of locations, average radius, and duration of each identified cluster.
 
 ## Documentation
-*Enter here a detailed description of your App. What is it intended to be used for. Which steps of analyses are performed and how. Please be explicit about any detail that is important for use and understanding of the App and its outcomes. You might also refer to the sections below.*
+The App applies sequential clustering algorithm to location data based on input parameters (radius, window_days and minimum location required for clustering) and appends results to the dataframe. The app returns a summary dataframe with attributes for each cluster commonly used as covariates in subsequent modeling efforts, a map of cluster locations, and cluster IDs added to the movestack output. The functions used here for clustering were adapted from *GPSeqClus* package by [Clapp et al. (2021)](https://doi.org/10.1111/2041-210X.13572). The *GPSeqClus* package has been removed from CRAN and currently the archived version is only available https://cran.r-project.org/src/contrib/Archive/GPSeqClus/. See [Cluff and Mech (2023)](https://doi.org/10.1002/2688-8319.12204) for a field test of the *GPSeqClus* package.
 
-### Application scope
-#### Generality of App usability
-*State here if the App was developed for a specific species, taxon or taxonomic group, or to answer a specific question. How might it influence the scope and utility of the App. This information will help the user to understand why the App might be producing no or odd results.*
+Notes:
+* Input parameters should reflect both the expected behavior of the study animals and the accuracy and sampling frequency of the tracking data. Use the [Track Summary Statistics App](https://www.moveapps.org/apps/browser/8ca03c5a-d61a-466d-860b-11beb6bf6404) to assess fix intervals for each animal.  
+* To restrict the analysis and alerts to recent incoming data from [automated feeds in Movebank](https://www.movebank.org/cms/movebank-content/live-data-feeds), we currently recommend using the [Filter by Last X Days App](https://www.moveapps.org/apps/browser/861808be-fb15-4e03-af3d-533642ec797e) as a previous step in the workflow. This can be combined with the [Email Alert App](https://www.moveapps.org/apps/browser/362b42c7-d7a2-4fa6-8d08-b3ddae002f9e) to be notified of new cluster events.
 
-*Examples:*
+## Input data
+move2 in Movebank format and optional threshold speed and window length
 
-This App was developed using data of birds. 
+## Output data
+move2 in Movebank format
 
-This App was developed using data of red deer. 
+## Artefacts
 
-This App was developed for any taxonomic group. 
+*Cluster_summary_output.csv*: csv with followig columns
 
-This App was developed to identify kill sites, but can probably be used to identify any kind of location clusters like nests, dens or drinking holes.
+- trackId	- Identification of the animal
+- clus_ID	- Unique cluster iedntification number
+- clus_start	-  Timestamp of the first location of the cluster
+- clus_end	- Timestamp of the Last location of the cluster
+- clus_status	- "Closed" if the time window (window_days) has expired for the cluster according to users Sys.time() output. These clusters therefore should not change if appending new location data.           "Open" if the time window remains open at the time the function was run. "Open" clusters have the ability to shift sequence, combine with other clusters, emerge as a new cluster, etc. This attribute becomes relevant when appending new satellite data to the location dataframe, and may serve as an index of whether an animal continues to actively visit the cluster site within the time window.
+- g_c_location_long	g_c_location_lat - Mean latitude/longitude of the cluster	
+- g_med_location_long	g_med_location_lat - Median latitude/longitude of the cluster		
+- clus_dur_hr	- Hours from the first to last locations of the cluster
+- n_clus_locs	- Number of locations within the cluster
+- visits - Number of visits/revisits to the cluster based on the number of times locations fall outside the search radius and return to add locations to the cluster
+- max_foray	- Maximum location distance (meters) from centroid during cluster duration for all locations.
+- clus_radius	- Maximum location distance (meters) from centroid during cluster duration for cluster-attributed locations.
+- avg_clus_dist	- Mean distance from all cluster locations to centroid
+- night_pts	- Number of night cluster locations at night
+- night_prop -  Proportion of cluster locations at night
+*Cluster_locations_plot.jpeg*: jpeg plot showing a map of the tracking data along with identified cluster locations
 
-#### Required data properties
-*State here the required and/or optimal data properties for this App to perform properly.*
+## Parameters
 
-*Examples:*
+*search_radius*: Search radius (meters) from cluster centroid when building clusters.
 
-This App is only applicable to data that reflect range resident behavior. 
+*window_days*: Window (days) to search for new locations from the most recent location to form one cluster.
 
-The data should have a fix rate of at least 1 location per 30 minutes. 
+*clus_min_locs*: Minimum number of locations required to form a cluster. Default used is 2.
 
-The App should work for any kind of (location) data.
-
-### Input type
-*Indicate which type of input data the App requires.*
-
-*Example*: `move2::move2_loc`
-
-### Output type
-*Indicate which type of output data the App produces to be passed on to subsequent Apps.*
-
-*Example:* `move2::move2_loc`
-
-### Artefacts
-*If the App creates artefacts (e.g. csv, pdf, jpeg, shapefiles, etc), please list them here and describe each.*
-
-*Example:* `rest_overview.csv`: csv-file with Table of all rest site properties
-
-### Settings 
-*Please list and define all settings/parameters that the App requires to be set by the App user, if necessary including their unit. Please first state the Setting name the user encounters in the Settings menu defined in the appspecs.json, and between brackets the argument used in the R function to be able to identify it quickly in the code if needed.*
-
-*Example:* `Radius of resting site` (radius): Defined radius the animal has to stay in for a given duration of time for it to be considered resting site. Unit: `metres`.
-
-### Changes in output data
-*Specify here how and if the App modifies the input data. Describe clearly what e.g. each additional column means.*
-
-*Examples:*
-
-The App adds to the input data the columns `Max_dist` and `Avg_dist`. They contain the maximum distance to the provided focal location and the average distance to it over all locations. 
-
-The App filterers the input data as selected by the user. 
-
-The output data is the outcome of the model applied to the input data. 
-
-The input data remains unchanged.
-
-### Most common errors
-*Please describe shortly what most common errors of the App can be, how they occur and best ways of solving them.*
-
-### Null or error handling
-*Please indicate for each setting as well as the input data which behaviour the App is supposed to show in case of errors or NULL values/input. Please also add notes of possible errors that can happen if settings/parameters are improperly set and any other important information that you find the user should be aware of.*
-
-*Example:* **Setting `radius`:** If no radius AND no duration are given, the input data set is returned with a warning. If no radius is given (NULL), but a duration is defined then a default radius of 1000m = 1km is set. 
+*centroid_calc*: Method for recalculating centroids when actively building clusters; currently "mean" is always used. 

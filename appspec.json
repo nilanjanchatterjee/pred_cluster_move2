@@ -9,69 +9,90 @@
       "type": "STRING"
     },
     {
-      "id": "year",
-      "name": "The year",
-      "description": "Insert description for the year setting setting",
-      "defaultValue": 2022,
-      "type": "INTEGER"
+      "id": "search_radius",
+      "name": "Radius for cluster search",
+      "description": "Define the radius (in meters) for searching for GPS locations and cluster formation.",
+      "defaultValue": 100,
+      "type": "DOUBLE"
     },
-    {
-      "id": "auxiliary-file-a",
-      "name": "Personalization",
-      "description": "You can personalize the app by providing a file",
-      "type": "USER_FILE"
-    }
+	{
+      "id": "window_days",
+      "name": "Time window used for cluster formation",
+      "description": "Provide the maximum time duration (in days) that animals spend at a cluster. Defaults to 3 (days).",
+      "defaultValue": 3,
+      "type": "DOUBLE"
+    },
+   {
+      "id": "clus_min_locs",
+      "name": "Minimum location used for clustering",
+      "description": "Provide the minimum number of locations to be used to define a cluster. This can be used to differentiate between predation clusters and other sites (den sites, resting locations). A higher minimum location for cluster ensures the animal has come back and spent some time in the cluster radius within the number of window days provided.",
+      "defaultValue": 5,
+      "type": "DOUBLE"
+    } 
   ],
   "dependencies": {
     "R": [
       {
-        "name": "lubridate"
+        "name": "plyr"
+      },
+	  {
+        "name": "geosphere"
+      },
+      {
+        "name": "tcltk"
+      },
+	  {
+        "name": "utils"
+      },
+	  {
+        "name": "suncalc"
+      },
+	  {
+        "name": "purrr"
+      },
+    {
+        "name": "sf"
+      },
+    {
+        "name": "tmap"
+      },
+    {
+      	"name": "dplyr"
       },
       {
         "remotes": "install_git('https://gitlab.com/bartk/move2.git')"
       }
     ]
   },
-  "providedAppFiles": [
-    {
-      "settingId": "auxiliary-file-a",
-      "from": "data/auxiliary/user-files/provided-app-files/auxiliary-file-a/sample.txt"
-    }
-  ],
   "license": {
     "key": "MIT"
   },
   "language": "eng",
   "keywords": [
-    "example",
-    "template"
+    "Kill cluster",
+    "predation cluster",
+    "spatio-temporal",
+	  "animal movement"
   ],
   "people": [
     {
-      "firstName": "Charles",
+      "firstName": "Nilanjan",
       "middleInitials": null,
-      "lastName": "Darwin",
-      "email": "creator@example.com",
-      "roles": [
-        "author",
-        "creator"
-      ],
-      "orcid": null,
-      "affiliation": null,
-      "affiliationRor": null
+      "lastName": "Chatterjee",
+      "email": "nchatter@umn.edu",
+      "roles": ["author", "creator"],
+      "orcid": "0000-0002-7932-0191",
+      "affiliation": "University of Minnesota",
+      "affiliationRor": ""
     }
+		
   ],
   "funding": [
     {
-      "name": "funder name",
-      "comment": "grant for App"
-    }
+	"name": "NASA Ecological Forecasting Program Grant 80NSSC21K1182"
+	}
   ],
-  "references": [
-    {
-      "type": "IsDescribedBy",
-      "note": "Darwin, C. 1900. The creation. Journal XY. 1-2",
-      "url": "https://anylink.xyz"
-    }
-  ]
+  "documentation" : {
+    "url": "https://github.com/nilanjanchatterjee/Pred_cluster/blob/main/README.md"
+  }
 }

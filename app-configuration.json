@@ -1,4 +1,6 @@
 {
     "sdk": "MoveApps R SDK",
-    "year": 2014
+    "search_radius": 200,
+    "window_days":3,
+    "clus_min_locs":5
 }
