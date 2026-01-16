@@ -5,8 +5,9 @@ library(suncalc)
 library(purrr)
 library(plyr)
 library(sf)
-library(tmap)
-library(dplyr)
+library(ggplot2)
+library(ggspatial)
+library(tidyverse)
 
 
 #' \describe{

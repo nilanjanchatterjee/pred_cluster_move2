@@ -1,5 +1,5 @@
 {
-  "version": "1.2",
+  "version": "0.1",
   "settings": [
     {
       "id": "sdk",
@@ -54,10 +54,13 @@
         "name": "sf"
       },
     {
-        "name": "tmap"
+        "name": "ggplot2"
+      },
+      {
+      	"name": "ggspatial"
       },
     {
-      	"name": "dplyr"
+      	"name": "tidyverse"
       },
       {
         "remotes": "install_git('https://gitlab.com/bartk/move2.git')"
@@ -91,8 +94,5 @@
     {
 	"name": "NASA Ecological Forecasting Program Grant 80NSSC21K1182"
 	}
-  ],
-  "documentation" : {
-    "url": "https://github.com/nilanjanchatterjee/Pred_cluster/blob/main/README.md"
-  }
+  ]
 }
